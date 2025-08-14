@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Progress Circles</title>
+<script src="https://cdn.jsdelivr.net/npm/progressbar.js"></script>
+<style>
+  .progress-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 30px;
+    margin-top: 50px;
+  }
+  .circle {
+    width: 120px;
+    height: 120px;
+    position: relative; /* for centering text */
+  }
+  .progress-text {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    text-align: center;
+    pointer-events: none;
+  }
+  .label {
+    text-align: center;
+    margin-top: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700; /* bold labels */
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-container">
+  <div>
+    <div id="circle1" class="circle"></div>
+    <div class="label">Certified Wildlife Habitats</div>
+  </div>
+  <div>
+    <div id="circle2" class="circle"></div>
+    <div class="label">Certification Habitat Points</div>
+  </div>
+  <div>
+    <div id="circle3" class="circle"></div>
+    <div class="label">Registration Goals</div>
+  </div>
+  <div>
+    <div id="circle4" class="circle"></div>
+    <div class="label">Education Goals</div>
+  </div>
+  <div>
+    <div id="circle5" class="circle"></div>
+    <div class="label">Community Outreach Goals</div>
+  </div>
+  <div>
+    <div id="circle6" class="circle"></div>
+    <div class="label">Administration Category</div>
+  </div>
+</div>
+
+<script>
+  function createCircle(id, value, centerText) {
+    // Clamp value to [0,1] so over-goal still shows full circle
+    var v = Math.max(0, Math.min(1, value));
+    var circle = new ProgressBar.Circle(id, {
+      color: '#28a745', // green
+      strokeWidth: 8,
+      trailWidth: 8,
+      trailColor: '#eee',
+      easing: 'easeInOut',
+      duration: 1400,
+      text: {
+        value: '',
+        className: 'progress-text'
+      },
+      from: { color: '#28a745', width: 8 },
+      to:   { color: '#28a745', width: 8 },
+      step: function(state, circleInstance) {
+        circleInstance.path.setAttribute('stroke', state.color);
+        circleInstance.setText(centerText);
+      }
+    });
+    circle.animate(v);
+  }
+
+  // Initialize circles with center text showing the original numbers
+  createCircle('#circle1', 1, '89');
+  createCircle('#circle2', 111/300, '111/300');
+  createCircle('#circle3', 35/40, '35/40');
+  createCircle('#circle4', 20/40, '20/40');
+  createCircle('#circle5', 55/50, '55/50'); // will clamp to 100%
+  createCircle('#circle6', 5/20, '5/20');
+</script>
+
+</body>
+</html>
